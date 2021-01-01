@@ -87,7 +87,7 @@ class Framebuffer():
 			# 16 bit per pixel
 			self.fb.write(r.to_bytes(1, byteorder='little') << 11 | g.to_bytes(1, byteorder='little') << 5 | b.to_bytes(1, byteorder='little'))
 
-	def clear(self, r, g, b, t=0):
+	def clear(self, r=255, g=255, b=255, t=0):
 		'''
 		clear function
 		Clear the screen with color
