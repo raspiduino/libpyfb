@@ -43,8 +43,7 @@ class Framebuffer():
 		# Get screen size
 		_ = open("/sys/class/graphics/fb0/virtual_size", "r")
 		__ = _.read()
-		self.screenx = int(__[:4])
-		self.screeny = int(__[5:8])
+		self.screenx,self.screeny = [int(i) for i in __.split(",")]
 		_.close()
 
 		# Get bit per pixel
@@ -57,7 +56,7 @@ class Framebuffer():
 		self.fbdev = os.open(self.fbpath, os.O_RDWR)
 
 		# Map framebuffer to memory
-		self.fb = mmap.mmap(self.fbdev, screenx*screeny*bpp//8, mmap.MAP_SHARED, mmap.PROT_WRITE|mmap.PROT_READ, offset=0)
+		self.fb = mmap.mmap(self.fbdev, self.screenx*self.screeny*self.bpp//8, mmap.MAP_SHARED, mmap.PROT_WRITE|mmap.PROT_READ, offset=0)
 
 	def drawpixel(self, x, y, r, g, b, t=0):
 		'''
@@ -108,4 +107,4 @@ if __name__ == "__main__":
 	fb0.clear()
 	for y in range(fb0.screeny):
 		for x in range(fb0.screenx):
-			fb0.drawpixel(x, y, x%300, y%400, (x+y)%500)
+			fb0.drawpixel(x, y, x%256, y%256, (x+y)%256)
